@@ -10,7 +10,7 @@ const UserTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const ITEMS_PER_PAGE = 20;
+  const ITEMS_PER_PAGE = 15;
 
   // Fetch user data from the API
   useEffect(() => {
@@ -27,7 +27,7 @@ const UserTable = () => {
     fetchUserData();
   }, []);
 
-  // Filtered and paginated users based on search term and current page
+//   Filtered and paginated users based on search term and current page
   const filteredUsers = useMemo(() => {
     const filtered = users.filter(user =>
       Object.values(user).some(
@@ -40,18 +40,17 @@ const UserTable = () => {
     const endIdx = startIdx + ITEMS_PER_PAGE;
     return filtered.slice(startIdx, endIdx);
   }, [users, searchTerm, currentPage]);
-
-  // Calculate total pages for pagination
-  console.log(filteredUsers)
-  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
 
   const handleSearch = () => {
     setCurrentPage(1);
   };
 
   const handlePageChange = page => {
-    setCurrentPage(page);
+    const newPage = Math.max(1, Math.min(page, totalPages)); // Ensure the newPage is between 1 and totalPages
+    setCurrentPage(newPage);
   };
+  
 
   const handleCheckboxChange = userId => {
     setSelectedRows(prevSelectedRows => {
@@ -94,7 +93,7 @@ const UserTable = () => {
   };
 
   const handleSelectAll = () => {
-    setSelectedRows(filteredUsers.map(user => user.id));
+    setSelectedRows(users.map(user => user.id));
   };
 
   const handleInputChange = (userId, field, value) => {
@@ -124,7 +123,7 @@ const UserTable = () => {
         <div className="checkbox">
           <input
             type="checkbox"
-            checked={selectedRows.length === filteredUsers.length}
+            checked={selectedRows.length === users.length}
             onChange={handleSelectAll}
           />
         </div>
@@ -209,14 +208,15 @@ const UserTable = () => {
           Previous Page
         </button>
         {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            className={`page-number ${currentPage === index + 1 ? 'active' : ''}`}
-            onClick={() => handlePageChange(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
+  <button
+    key={index + 1}
+    className={`page-number ${currentPage === index + 1 ? 'active' : ''}`}
+    onClick={() => handlePageChange(index + 1)}
+  >
+    {index + 1}
+  </button>
+))}
+
         <button className="next-page" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
           Next Page
         </button>
