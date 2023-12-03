@@ -63,9 +63,13 @@ const UserTable = () => {
   };
 
   const handleDeleteSelected = () => {
-    // Implement logic to delete selected rows in memory
+    if (selectedRows.length === 0) {
+      alert("No rows selected. Please select rows to delete.");
+      return;
+    }
     setUsers(prevUsers => prevUsers.filter(user => !selectedRows.includes(user.id)));
     setSelectedRows([]);
+    alert("Selected rows will be deleted!!");
   };
 
   const handleEdit = userId => {
@@ -87,9 +91,9 @@ const UserTable = () => {
   };
 
   const handleDelete = userId => {
-    // Implement logic to delete the specified user in memory
     setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
     setSelectedRows([]);
+    alert("This Row will be deleted!!.");
   };
 
   const handleSelectAll = () => {
@@ -117,8 +121,6 @@ const UserTable = () => {
           Search
         </button>
       </div>
-
-      {/* Table headers */}
       <div className="table-header">
         <div className="checkbox">
           <input
@@ -133,8 +135,6 @@ const UserTable = () => {
         <div>Role</div>
         <div>Actions</div>
       </div>
-
-      {/* Table rows */}
       {filteredUsers.map(user => (
         <div key={user.id} className={`table-row ${selectedRows.includes(user.id) ? 'selected' : ''}`}>
           <div className="checkbox">
@@ -198,8 +198,6 @@ const UserTable = () => {
     </div>
         </div>
       ))}
-
-      {/* Pagination */}
       <div className="pagination">
         <button className="first-page" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>
           First Page
@@ -224,10 +222,8 @@ const UserTable = () => {
           Last Page
         </button>
       </div>
-
-      {/* Delete Selected */}
       <button className="bulk-delete" onClick={handleDeleteSelected}>
-        Delete Selected
+        <FontAwesomeIcon icon={faTrashAlt}/>
       </button>
     </div>
   );
