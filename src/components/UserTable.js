@@ -1,4 +1,3 @@
-// components/UserTable.js
 import React, { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt, faSave } from '@fortawesome/free-solid-svg-icons';
